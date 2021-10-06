@@ -8,7 +8,7 @@ from flask_swagger import swagger
 from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from admin import setup_admin
-from models import db, User
+from models import db, User, People, Planet, Vehicle, UserPeopleFavorites, UserPlanetsFavorites, UserVehiclesFavorites
 #from models import Person
 
 app = Flask(__name__)
@@ -36,6 +36,48 @@ def handle_hello():
     response_body = {
         "msg": "Hello, this is your GET /user response "
     }
+
+    return jsonify(response_body), 200
+
+@app.route('/people', methods=['GET'])
+def handle_people():
+    people_query = People.query.all()
+    response_body = [x.serialize() for x in people_query]
+
+    return jsonify(response_body), 200
+
+@app.route('/people/<int:id>', methods=['GET'])
+def handle_person(id):
+    people_query = People.query.get(id)
+    response_body = people_query.serialize()
+
+    return jsonify(response_body), 200
+
+@app.route('/planet', methods=['GET'])
+def handle_planet():
+    planet_query = Planet.query.all()
+    response_body = [x.serialize() for x in planet_query]
+
+    return jsonify(response_body), 200
+
+@app.route('/planet/<int:id>', methods=['GET'])
+def handle_worlds(id):
+    planet_query = Planet.query.get(id)
+    response_body = planet_query.serialize()
+
+    return jsonify(response_body), 200
+
+@app.route('/vehicle', methods=['GET'])
+def handle_vehicle():
+    vehicle_query = Vehicle.query.all()
+    response_body = [x.serialize() for x in vehicle_query]
+
+    return jsonify(response_body), 200
+
+@app.route('/vehicle/<int:id>', methods=['GET'])
+def get_vehicle(id):
+    vehicle_query = Vehicle.query.get(id)
+    response_body = vehicle_query.serialize()
 
     return jsonify(response_body), 200
 
